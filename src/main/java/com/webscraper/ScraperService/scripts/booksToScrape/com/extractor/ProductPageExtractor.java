@@ -2,12 +2,14 @@ package com.webscraper.ScraperService.scripts.books.toscrape.com.extractor;
 
 import com.webscraper.ScraperService.entity.FetchedData;
 import com.webscraper.ScraperService.entity.ScrapedData;
-import com.webscraper.ScraperService.utils.Data;
+
 import com.webscraper.ScraperService.utils.ProductExtractorScript;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+
 
 
 @Slf4j
