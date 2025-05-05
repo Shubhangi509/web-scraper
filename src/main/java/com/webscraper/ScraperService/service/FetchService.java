@@ -1,6 +1,8 @@
 package com.webscraper.ScraperService.service;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.webscraper.ScraperService.entity.FetchedData;
 import com.webscraper.ScraperService.utils.Fetcher;
 import com.webscraper.ScraperService.utils.FileStorageUtil;
+
 
 @Slf4j
 @Service
@@ -37,7 +40,6 @@ public class FetchService {
 
     public FetchedData fetchPage(String url) throws Exception {
         String domain = getDomain(url);
-        log.info("Domain: {}", domain);
 
         String html = fetcher.plainFetch(url);
         String apiData = "";
@@ -60,6 +62,8 @@ public class FetchService {
         data.setUrl(url);
         data.setHtml(html);
         data.setApiData(apiData);
+       
+        fileStorageUtil.saveCurrentData(data);
         
         return data;
     }
@@ -118,4 +122,5 @@ public class FetchService {
         }
         return apiData;
     }
+
 }

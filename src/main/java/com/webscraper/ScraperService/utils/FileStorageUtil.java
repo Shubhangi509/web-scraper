@@ -12,11 +12,34 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.webscraper.ScraperService.entity.FetchedData;
+
 @Slf4j
 @Component
 public class FileStorageUtil {
 
     private static final String BASE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\fetchedDataFiles\\";
+
+    public void saveCurrentData(FetchedData data) {
+        String html = data.getHtml();
+        saveData(html, "htmlData.txt");
+        String apiData = data.getApiData();
+        if(!apiData.isEmpty()) saveData(apiData, "apiData.txt");
+    }
+
+    private void saveData(String data, String filename) {
+        try {
+            String filePath = BASE_PATH + filename;
+            log.info("Storing fetched data in file: {}", filename);
+            FileWriter file = new FileWriter(filePath);
+            file.write(data);
+            log.info("Succesfully written fetched data to file: {}", filename);
+            file.close();
+        }
+        catch(IOException e) {
+            log.error("Error occured while writing fetched data to file: {}", filename);
+        }
+    }
 
     public String saveToFile(String url, String apiData, String html) {
         try{
