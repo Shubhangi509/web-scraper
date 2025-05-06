@@ -9,6 +9,27 @@ This application provides a complete solution for scraping product information f
 
 ## How to Run the Project
 
+### Prerequisites
+
+1. Java 17 (or later) and Gradle installed
+2. MySQL Server installed and running
+3. Create a new MySQL database for the application
+4. Node.js and npm installed (for frontend)
+
+### Database Setup
+
+1. Install MySQL Server if not already installed
+2. Create a new database:
+   ```sql
+   CREATE DATABASE webscraper;
+   ```
+3. Update the database configuration in `src/main/resources/application.properties`:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/webscraper
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   ```
+
 ### Running the Backend
 
 1. Make sure you have Java 17 (or later) and Gradle installed.
