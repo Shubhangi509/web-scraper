@@ -18,7 +18,7 @@ This application provides a complete solution for scraping product information f
 
 ### Database Setup
 
-1. Install MySQL Server if not already installed
+1. Install MySQL Server if not already installed (I used MySQL Workbench for local testing)
 2. Create a new database:
    ```sql
    CREATE DATABASE webscraper;
@@ -76,8 +76,9 @@ This application provides a complete solution for scraping product information f
 
 ## Supported Websites
 
-Currently, the application supports:
-- Amazon.in (products and category pages)
+Currently, the application supports product pages:
+- varanga.in
+- redtape.com
 
 ## Adding New Website Support
 

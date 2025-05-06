@@ -233,7 +233,7 @@ function App() {
               <div className="input-group">
                 <input
                   type="url"
-                  placeholder="Enter URL (e.g., Amazon product or category URL)"
+                  placeholder="Enter URL (e.g., Varanga or Red Tape product page URL)"
                   value={url}
                   onChange={(e) => {
                     setUrl(e.target.value);
