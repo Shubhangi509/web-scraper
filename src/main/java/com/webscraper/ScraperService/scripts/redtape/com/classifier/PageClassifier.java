@@ -11,7 +11,7 @@ import com.webscraper.ScraperService.entity.FetchedData;
  */
 @Slf4j
 @Component("redtape_com_classifier")
-public class RedtapeClassifier implements ClassifierScript {
+public class PageClassifier implements ClassifierScript {
 
     @Override
     public String classify(FetchedData fetchedData) {

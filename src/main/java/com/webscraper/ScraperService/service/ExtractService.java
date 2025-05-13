@@ -4,6 +4,7 @@ import com.webscraper.ScraperService.entity.ScrapedData;
 import com.webscraper.ScraperService.entity.FetchedData;
 import com.webscraper.ScraperService.repository.ScrapedDataRepository;
 import com.webscraper.ScraperService.utils.ClassifierUtil;
+import com.webscraper.ScraperService.utils.FileStorageUtil;
 import com.webscraper.ScraperService.utils.ProductExtractorScript;
 import lombok.extern.slf4j.Slf4j;
 import com.webscraper.ScraperService.entity.CategoryData;
@@ -25,28 +26,32 @@ public class ExtractService {
     private final ApplicationContext applicationContext;
     private final ScrapedDataRepository scrapeRepo;
     private final ClassifierUtil classifierUtil;
+    private FetchService fetchService;
+    private FileStorageUtil fileStorageUtil;
+
 
     @Autowired
     public ExtractService(ApplicationContext applicationContext, ScrapedDataRepository scrapeRepo, 
-                          ClassifierUtil classifierUtil) {
+                          ClassifierUtil classifierUtil, FetchService fetchService, FileStorageUtil fileStorageUtil) {
         this.applicationContext = applicationContext;
         this.scrapeRepo = scrapeRepo;
         this.classifierUtil = classifierUtil;
+        this.fetchService = fetchService;
+        this.fileStorageUtil = fileStorageUtil;
     }
 
     
-    public List<ScrapedData> extractData(FetchedData fetchedData) throws Exception {
+    public ScrapedData extractData(FetchedData fetchedData) throws Exception {
         String url = fetchedData.getUrl();
         log.info("Extracting data from fetched content for url: {}", url);
         
         String domain = fetchedData.getDomain();
         String pageType = fetchedData.getPageType();
 
-        
         String beanName = domain.replace(".", "_") + "_" + pageType;
 
         log.info("Calling extractor bean with bean name: {}", beanName);
-        List<ScrapedData> scrapedDataList = new ArrayList<>();
+
         if(pageType.equals("product")) {
             ScrapedData scrapedData;
             try {
@@ -55,7 +60,7 @@ public class ExtractService {
                 scrapedData = extractor.extract(fetchedData);
                 log.info("Data scraped successfully");
                 // scrapeRepo.save(scrapedData);
-                scrapedDataList.add(scrapedData);
+                return scrapedData;
             } catch (Exception e) {
                 log.error("No extractor found for domain {} and page type {}", domain, pageType);
                 throw new Exception(e.getMessage());
@@ -67,22 +72,15 @@ public class ExtractService {
                 CategoryExtractorScript extractor = applicationContext.getBean(beanName, CategoryExtractorScript.class);
                 CategoryData categoryData = extractor.extract(fetchedData);
                 List<String> productUrls = categoryData.getProductUrls();
-                String nextPageUrl = categoryData.getNextPageUrl();
-                // for(String productUrl : productUrls) {
-                    
-                // }
+
+                String filename = domain.replace(".", "_") + "_Urls.txt";
+                fileStorageUtil.saveForNextCall(productUrls, filename);
                 // scrapedDataList.addAll(categoryData.getProductUrls());
             } catch (Exception e) {
                 log.error("No extractor found for domain {} and page type {}", domain, pageType);
                 throw new Exception(e.getMessage());
             }
-            // create an interface CategoryExtractorScript
-
-            // implement it in domain specific scripts
-            // return a list of urls and a next page url
-            // add these urls to a file
-            // trigger the api till the file is empty.
         }
-        return scrapedDataList;
+        return null;
     }
 }

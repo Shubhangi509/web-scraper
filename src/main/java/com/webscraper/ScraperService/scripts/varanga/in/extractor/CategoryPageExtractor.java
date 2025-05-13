@@ -1,19 +1,19 @@
-package com.webscraper.ScraperService.scripts.bookstoscrape.com.extractor;
+package com.webscraper.ScraperService.scripts.varanga.in.extractor;
 
+import com.webscraper.ScraperService.entity.CategoryData;
 import com.webscraper.ScraperService.entity.FetchedData;
-import com.webscraper.ScraperService.entity.ScrapedData;
 import com.webscraper.ScraperService.utils.CategoryExtractorScript;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
-import com.webscraper.ScraperService.entity.CategoryData;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Component("books_toscrape_com_category")
+@Component("varanga_in_category")
 public class CategoryPageExtractor implements CategoryExtractorScript {
 
     @Override
@@ -27,9 +27,9 @@ public class CategoryPageExtractor implements CategoryExtractorScript {
         Document doc = Jsoup.parse(html);
 
         List<String> productUrls = new ArrayList<>();
-        List<Element> productDataList = doc.select(".product_pod");
+        List<Element> productDataList = doc.select(".product-details");
         for(Element productData : productDataList) {
-            String productUrl = "https://" + domain + "/" + productData.select("h3").select("a").attr("href");
+            String productUrl = "https://" + domain + "/" + productData.select(".product-title").attr("href");
             productUrls.add(productUrl);
         }
         log.info("Product urls extracted..");

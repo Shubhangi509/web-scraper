@@ -16,6 +16,7 @@ import com.webscraper.ScraperService.service.ExtractService;
 import com.webscraper.ScraperService.service.CategoryPageExtractorService;
 import com.webscraper.ScraperService.utils.CsvExportUtil;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class ScraperController {
     private CategoryPageExtractorService categoryExtractorService;
     private CsvExportUtil csvExportUtil;
     private ClassifierUtil classifierUtil;
+
+    private static final String BASE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\productLists\\";
 
     @Autowired
     public ScraperController(FetchService fetchService, ExtractService extractService,
@@ -60,37 +63,41 @@ public class ScraperController {
     @GetMapping("/scrape")
     public ResponseEntity<byte[]> scrape(@RequestParam(name = "url") String url) {
         log.info("Request to scrape data for url: {}", url);
-        
+        List<ScrapedData> scrapedDataList = new ArrayList<>();
+        String filepath = "";
+        boolean fileLoaded = false;
+        List<String> urls = new ArrayList<>();
+        int urlIndex = 0;
         try {
-            // Step 1: Fetch the page data for the URL
-            FetchedData fetchedData = fetchService.fetchPage(url);
-            log.info("Fetch successful for URL: {}", url);
+            do {
+                // Step 1: Fetch the page data for the URL
+                if(!urls.isEmpty()) {
+                    url = urls.get(urlIndex);
+                }
+                FetchedData fetchedData = fetchService.fetchPage(url);
 
-            String domain = fetchedData.getDomain();
+                log.info("Fetch successful for URL: {}", url);
 
-            // Step 2: Classify the page type using the fetched datd
-            String pageType = classifierUtil.classifyPageType(fetchedData);
-            fetchedData.setPageType(pageType);
+                String domain = fetchedData.getDomain();
 
-            log.info("Data classified as '{}' page type for domain: {}", 
-                    pageType, domain);
-            
-            List<ScrapedData> scrapedDataList = extractService.extractData(fetchedData);
-            
-            // Step 3: Handle the page according to its type
-//            if ("category".equals(pageType)) {
-//                log.info("Processing as category page - will extract and process all products");
-//
-//                // For category pages: Extract all product URLs and process each product
-//                // This will handle pagination automatically until no more pages are found
-//                dataList = categoryExtractorService.processAllProductsFromCategory(url, fetchedData.getDomain());
-//                log.info("Processed category with {} products", dataList.size());
-//            } else {
-//                // For product pages (or any other type): Just use the single extracted item
-//                log.info("Processing as individual product page");
-//                dataList.add(scrapedData);
-//            }
-            
+                // Step 2: Classify the page type using the fetched data
+                String pageType = classifierUtil.classifyPageType(fetchedData);
+                fetchedData.setPageType(pageType);
+
+                log.info("Data classified as '{}' page type for domain: {}", pageType, domain);
+
+                ScrapedData scrapedData = extractService.extractData(fetchedData);
+                if(scrapedData == null && !fileLoaded) {
+                    filepath = BASE_PATH + domain.replaceAll("\\.", "_") + "_Urls.txt";
+                    urls = getUrls(filepath);
+                    fileLoaded = true;
+                }
+                else {
+                    scrapedDataList.add(scrapedData);
+                    urlIndex++;
+                }
+            } while(!filepath.isEmpty() && urlIndex < urls.size());
+
             // Step 4: Convert all scraped data to CSV and return as download
             byte[] csvContent = csvExportUtil.convertToCsv(scrapedDataList);
             log.info("Generated CSV with {} records", scrapedDataList.size());
@@ -107,5 +114,17 @@ public class ScraperController {
             log.error("Scrape unsuccessful with error: {}", ex.getMessage(), ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private List<String> getUrls(String filepath) throws IOException {
+        List<String> urls = new ArrayList<>();
+        File file = new File(filepath);
+        BufferedReader br = new BufferedReader((new FileReader(file)));
+        String line;
+        while ((line = br.readLine()) != null) {
+            urls.add(line);
+        }
+        br.close();
+        return urls;
     }
 }

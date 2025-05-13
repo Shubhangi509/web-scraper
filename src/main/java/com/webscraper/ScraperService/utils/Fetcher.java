@@ -39,7 +39,7 @@ public class Fetcher {
 
     public String plainFetch(String url) throws Exception {
         try {
-            log.info("Trying plain fetch");
+            log.info("Trying plain fetch for url: {}", url);
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("user-agent",userAgent)
@@ -49,8 +49,15 @@ public class Fetcher {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            log.info("Plain fetch successful");
-            return response.body();
+            String html = "";
+            if(!ErrorPage.isErrorPage(response)) {
+                log.info("Plain fetch successful");
+                html = response.body();
+            }
+            else {
+                log.info("Plain fetch unsuccessful");
+            }
+            return html;
         } catch (Exception e) {
             log.error("Error occurred during plain fetch: {}", e.getMessage());
             throw new Exception(e);

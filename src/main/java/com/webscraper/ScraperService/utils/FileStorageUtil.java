@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import com.webscraper.ScraperService.entity.FetchedData;
 
@@ -18,7 +19,7 @@ import com.webscraper.ScraperService.entity.FetchedData;
 @Component
 public class FileStorageUtil {
 
-    private static final String BASE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\fetchedDataFiles\\";
+    private static final String BASE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\";
 
     public void saveCurrentData(FetchedData data) {
         String html = data.getHtml();
@@ -29,7 +30,7 @@ public class FileStorageUtil {
 
     private void saveData(String data, String filename) {
         try {
-            String filePath = BASE_PATH + filename;
+            String filePath = BASE_PATH + "fetchedDataFiles\\" + filename;
             log.info("Storing fetched data in file: {}", filename);
             FileWriter file = new FileWriter(filePath);
             file.write(data);
@@ -38,6 +39,22 @@ public class FileStorageUtil {
         }
         catch(IOException e) {
             log.error("Error occured while writing fetched data to file: {}", filename);
+        }
+    }
+
+    public void saveForNextCall(List<String> urls, String filename) {
+        try {
+            String filePath = BASE_PATH + "productLists\\" + filename;
+            log.info("Storing product urls in file: {}", filename);
+            FileWriter file = new FileWriter(filePath, false);
+            for(String url : urls) {
+                file.append(url).append("\n");
+            }
+            log.info("Succesfully written product urls to file: {}", filename);
+            file.close();
+        }
+        catch(IOException e) {
+            log.error("Error occured while writing product urls to file: {}", filename);
         }
     }
 
