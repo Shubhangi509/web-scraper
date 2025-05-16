@@ -73,6 +73,9 @@ public class ExtractService {
                 CategoryData categoryData = extractor.extract(fetchedData);
                 List<String> productUrls = categoryData.getProductUrls();
 
+                // String nextPageUrl = categoryData.getNextPageUrl();
+                // if(nextPageUrl != null && !nextPageUrl.isEmpty()) productUrls.add(nextPageUrl);
+
                 String filename = domain.replace(".", "_") + "_Urls.txt";
                 fileStorageUtil.saveForNextCall(productUrls, filename);
                 // scrapedDataList.addAll(categoryData.getProductUrls());

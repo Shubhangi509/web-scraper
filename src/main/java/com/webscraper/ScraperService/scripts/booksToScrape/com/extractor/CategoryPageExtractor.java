@@ -32,9 +32,10 @@ public class CategoryPageExtractor implements CategoryExtractorScript {
             String productUrl = "https://" + domain + "/" + productData.select("h3").select("a").attr("href");
             productUrls.add(productUrl);
         }
+
         log.info("Product urls extracted..");
 
-        String nextPageUrl = null;
+        String nextPageUrl = "https://" + domain + "/" + doc.select(".next").select("a").attr("href");
 
         return new CategoryData(productUrls, nextPageUrl);
     }

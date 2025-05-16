@@ -19,7 +19,7 @@ public class PageClassifier implements ClassifierScript {
         log.info("Classifying Books To Scrape URL: {}", url);
         
         // Product page URLs typically contain "/catalogue/" followed by a book slug
-        if (url.contains("/catalogue/")) {
+        if (url.contains("/catalogue/") && !url.contains("/catalogue/page-")) {
             log.info("Classified as product page");
             return "product";
         }

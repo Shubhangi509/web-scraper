@@ -68,6 +68,7 @@ public class ScraperController {
         boolean fileLoaded = false;
         List<String> urls = new ArrayList<>();
         int urlIndex = 0;
+        int pageNumber = 0;
         try {
             do {
                 // Step 1: Fetch the page data for the URL
@@ -85,14 +86,19 @@ public class ScraperController {
                 fetchedData.setPageType(pageType);
 
                 log.info("Data classified as '{}' page type for domain: {}", pageType, domain);
-
+                if(pageType.equals("category")) fileLoaded = false;
                 ScrapedData scrapedData = extractService.extractData(fetchedData);
+
                 if(scrapedData == null && !fileLoaded) {
                     filepath = BASE_PATH + domain.replaceAll("\\.", "_") + "_Urls.txt";
                     urls = getUrls(filepath);
                     fileLoaded = true;
+                    urlIndex = 0;
+                    pageNumber++;
+                    log.info("Scraping page: {}...\n\n\n", pageNumber);
                 }
                 else {
+                    log.info("Scraped Product: {} from page: {}\n\n", urlIndex, pageNumber);
                     scrapedDataList.add(scrapedData);
                     urlIndex++;
                 }
