@@ -1,11 +1,11 @@
-package com.webscraper.ScraperService.repository;
+// package com.webscraper.ScraperService.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.stereotype.Repository;
 
-import com.webscraper.ScraperService.entity.ScrapedData;
+// import com.webscraper.ScraperService.entity.ScrapedData;
 
-@Repository
-public interface ScrapedDataRepository extends JpaRepository<ScrapedData, Long>{
+// @Repository
+// public interface ScrapedDataRepository extends JpaRepository<ScrapedData, Long>{
     
-}
+// }

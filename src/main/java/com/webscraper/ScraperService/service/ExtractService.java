@@ -2,7 +2,7 @@ package com.webscraper.ScraperService.service;
 
 import com.webscraper.ScraperService.entity.ScrapedData;
 import com.webscraper.ScraperService.entity.FetchedData;
-import com.webscraper.ScraperService.repository.ScrapedDataRepository;
+// import com.webscraper.ScraperService.repository.ScrapedDataRepository;
 import com.webscraper.ScraperService.utils.ClassifierUtil;
 import com.webscraper.ScraperService.utils.FileStorageUtil;
 import com.webscraper.ScraperService.utils.ProductExtractorScript;
@@ -24,17 +24,18 @@ public class ExtractService {
     private static final String BASE_FILE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\fetchedDataFiles\\";
 
     private final ApplicationContext applicationContext;
-    private final ScrapedDataRepository scrapeRepo;
+    // private final ScrapedDataRepository scrapeRepo;
     private final ClassifierUtil classifierUtil;
     private FetchService fetchService;
     private FileStorageUtil fileStorageUtil;
 
 
     @Autowired
-    public ExtractService(ApplicationContext applicationContext, ScrapedDataRepository scrapeRepo, 
-                          ClassifierUtil classifierUtil, FetchService fetchService, FileStorageUtil fileStorageUtil) {
+    // public ExtractService(ApplicationContext applicationContext, ScrapedDataRepository scrapeRepo, 
+                        //   ClassifierUtil classifierUtil, FetchService fetchService, FileStorageUtil fileStorageUtil) {
+    public ExtractService(ApplicationContext applicationContext, ClassifierUtil classifierUtil, FetchService fetchService, FileStorageUtil fileStorageUtil) {
         this.applicationContext = applicationContext;
-        this.scrapeRepo = scrapeRepo;
+        // this.scrapeRepo = scrapeRepo;
         this.classifierUtil = classifierUtil;
         this.fetchService = fetchService;
         this.fileStorageUtil = fileStorageUtil;
