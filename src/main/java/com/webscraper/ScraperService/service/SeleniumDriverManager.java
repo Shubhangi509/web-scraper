@@ -35,7 +35,9 @@ public class SeleniumDriverManager {
     private Integer requestCount = 0;
     private ChromeDriverService chromeDriverService;
 
-    public SeleniumDriverManager(@Value("${selenium.driverPath}") String driverPath,
+    public SeleniumDriverManager(@Value("${selenium.driverPath:#{null}}") String driverPath,
+                                 @Value("${CHROMEDRIVER_PATH:#{null}}") String chromeDriverPath,
+                                 @Value("${GOOGLE_CHROME_BIN:#{null}}") String googleChromeBin,
                                  @Value("${selenium.isHeadless}") Boolean isHeadless,
                                  @Value("${selenium.maxRequestCount}") Integer maxRequestCount,
                                  @Value("${selenium.maxDriverUpTime}") Integer maxDriverUptime,
@@ -47,20 +49,33 @@ public class SeleniumDriverManager {
         this.userAgent = constants.getUserAgent();
 
         this.chromeDriverService = createChromeDriverService();
-        chromeOptions = createChromeOptions(isHeadless);
+        chromeOptions = createChromeOptions(isHeadless, driverPath, googleChromeBin);
         try {
-            System.setProperty("webdriver.chrome.driver", driverPath);
+            if(driverPath != null) {
+                System.setProperty("webdriver.chrome.driver", driverPath);
+            }
+            else {
+                System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+            }
+//            System.setProperty("webdriver.chrome.driver", getChromeDriverPath());
 
+
+            chromeDriverService.start();
             // This line is responsible for spawning new chrome window
-            // webDriver = new ChromeDriver(chromeDriverService, chromeOptions);
+             webDriver = new ChromeDriver(chromeDriverService, chromeOptions);
             log.info("Chrome driver started !!");
         } catch (Exception e) {
             log.error("Error occurred while initiating chrome driver: {}", e.getMessage());
         }
     }
 
-    private ChromeOptions createChromeOptions(Boolean isHeadless) {
+    private ChromeOptions createChromeOptions(Boolean isHeadless, String driverPath, String googleChromeBin) {
         ChromeOptions chromeOptions = new ChromeOptions();
+        if (driverPath == null && googleChromeBin != null) {
+            chromeOptions.setBinary(googleChromeBin);
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+        }
         if(isHeadless) chromeOptions.addArguments("--headless=new");
         chromeOptions.addArguments("--remote-allow-origins=*");
         chromeOptions.addArguments("--user-agent=" + userAgent);
