@@ -33,7 +33,7 @@ public class ScraperController {
     private CsvExportUtil csvExportUtil;
     private ClassifierUtil classifierUtil;
 
-    private static final String BASE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\productLists\\";
+//    private static final String BASE_PATH = System.getProperty("user.dir") + "\\src\\main\\java\\com\\webscraper\\ScraperService\\productLists\\";
 
     @Autowired
     public ScraperController(FetchService fetchService, ExtractService extractService,
@@ -64,8 +64,8 @@ public class ScraperController {
     public ResponseEntity<byte[]> scrape(@RequestParam(name = "url") String url) {
         log.info("Request to scrape data for url: {}", url);
         List<ScrapedData> scrapedDataList = new ArrayList<>();
-        String filepath = "";
-        boolean fileLoaded = false;
+//        String filepath = "";
+//        boolean fileLoaded = false;
         List<String> urls = new ArrayList<>();
         int urlIndex = 0;
         int pageNumber = 0;
@@ -86,13 +86,15 @@ public class ScraperController {
                 fetchedData.setPageType(pageType);
 
                 log.info("Data classified as '{}' page type for domain: {}", pageType, domain);
-                if(pageType.equals("category")) fileLoaded = false;
+//                if(pageType.equals("category")) fileLoaded = false;
                 ScrapedData scrapedData = extractService.extractData(fetchedData);
 
-                if(scrapedData == null && !fileLoaded) {
-                    filepath = BASE_PATH + domain.replaceAll("\\.", "_") + "_Urls.txt";
-                    urls = getUrls(filepath);
-                    fileLoaded = true;
+//                if(scrapedData == null && !fileLoaded) {
+                if(pageType.equals("category")){
+//                    filepath = BASE_PATH + domain.replaceAll("\\.", "_") + "_Urls.txt";
+//                    urls = getUrls(filepath);
+//                    fileLoaded = true;
+                    urls = scrapedData.getProductUrls();
                     urlIndex = 0;
                     pageNumber++;
                     log.info("Scraping page: {}...\n\n\n", pageNumber);
@@ -102,7 +104,8 @@ public class ScraperController {
                     scrapedDataList.add(scrapedData);
                     urlIndex++;
                 }
-            } while(!filepath.isEmpty() && urlIndex < urls.size());
+//            } while(!filepath.isEmpty() && urlIndex < urls.size());
+            } while(urlIndex < urls.size());
 
             // Step 4: Convert all scraped data to CSV and return as download
             byte[] csvContent = csvExportUtil.convertToCsv(scrapedDataList);
@@ -122,15 +125,15 @@ public class ScraperController {
         }
     }
 
-    private List<String> getUrls(String filepath) throws IOException {
-        List<String> urls = new ArrayList<>();
-        File file = new File(filepath);
-        BufferedReader br = new BufferedReader((new FileReader(file)));
-        String line;
-        while ((line = br.readLine()) != null) {
-            urls.add(line);
-        }
-        br.close();
-        return urls;
-    }
+//    private List<String> getUrls(String filepath) throws IOException {
+//        List<String> urls = new ArrayList<>();
+//        File file = new File(filepath);
+//        BufferedReader br = new BufferedReader((new FileReader(file)));
+//        String line;
+//        while ((line = br.readLine()) != null) {
+//            urls.add(line);
+//        }
+//        br.close();
+//        return urls;
+//    }
 }

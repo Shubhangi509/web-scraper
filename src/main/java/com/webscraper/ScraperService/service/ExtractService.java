@@ -53,15 +53,15 @@ public class ExtractService {
 
         log.info("Calling extractor bean with bean name: {}", beanName);
 
+        ScrapedData scrapedData;
+
         if(pageType.equals("product")) {
-            ScrapedData scrapedData;
             try {
                 log.info("Processing as product page - will extract product data");
                 ProductExtractorScript extractor = applicationContext.getBean(beanName, ProductExtractorScript.class);
                 scrapedData = extractor.extract(fetchedData);
                 log.info("Data scraped successfully");
                 // scrapeRepo.save(scrapedData);
-                return scrapedData;
             } catch (Exception e) {
                 log.error("No extractor found for domain {} and page type {}", domain, pageType);
                 throw new Exception(e.getMessage());
@@ -73,18 +73,19 @@ public class ExtractService {
                 CategoryExtractorScript extractor = applicationContext.getBean(beanName, CategoryExtractorScript.class);
                 CategoryData categoryData = extractor.extract(fetchedData);
                 List<String> productUrls = categoryData.getProductUrls();
-
+                scrapedData = new ScrapedData();
+                scrapedData.setProductUrls(productUrls);
                 // String nextPageUrl = categoryData.getNextPageUrl();
                 // if(nextPageUrl != null && !nextPageUrl.isEmpty()) productUrls.add(nextPageUrl);
 
-                String filename = domain.replace(".", "_") + "_Urls.txt";
-                fileStorageUtil.saveForNextCall(productUrls, filename);
+//                String filename = domain.replace(".", "_") + "_Urls.txt";
+//                fileStorageUtil.saveForNextCall(productUrls, filename);
                 // scrapedDataList.addAll(categoryData.getProductUrls());
             } catch (Exception e) {
                 log.error("No extractor found for domain {} and page type {}", domain, pageType);
                 throw new Exception(e.getMessage());
             }
         }
-        return null;
+        return scrapedData;
     }
 }
