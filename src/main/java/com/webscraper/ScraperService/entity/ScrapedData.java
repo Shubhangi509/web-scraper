@@ -8,6 +8,11 @@ package com.webscraper.ScraperService.entity;
 //import jakarta.persistence.Id;
 //import jakarta.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
 //@Entity
 //@Table(name="scraped_data")
 public class ScrapedData {
@@ -53,7 +58,9 @@ public class ScrapedData {
 //    @Column(name="availability")
     private String availability;
 
-    
+    @Getter
+    @Setter
+    private List<String> productUrls;
     public ScrapedData() {
         // Default constructor required by JPA
     }

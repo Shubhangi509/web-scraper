@@ -7,31 +7,48 @@ package com.webscraper.ScraperService.entity;
 //import jakarta.persistence.Id;
 //import jakarta.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 //@Entity
 //@Table(name="fetched_data")
 public class FetchedData {
-    
-//    @Id
+
+    //    @Id
 //    @GeneratedValue(strategy=GenerationType.IDENTITY)
 //    @Column(name="id")
+    @Getter
+    @Setter
     private Long id;
-    
-//    @Column(name="domain")
+
+    //    @Column(name="domain")
+    @Getter
+    @Setter
     private String domain;
 
-//    @Column(name="url")
+    //    @Column(name="url")
+    @Getter
+    @Setter
     private String url;
 
-//    @Column(name="data_path")
+    //    @Column(name="data_path")
+    @Getter
+    @Setter
     private String fetchedDataPath;
 
-//    @Column(name="page_type")
+    //    @Column(name="page_type")
+    @Getter
+    @Setter
     private String pageType;
 
-//    @Column(name="html", columnDefinition="TEXT")
+    //    @Column(name="html", columnDefinition="TEXT")
+    @Getter
+    @Setter
     private String html;
-    
-//    @Column(name="api_data", columnDefinition="TEXT")
+
+    //    @Column(name="api_data", columnDefinition="TEXT")
+    @Getter
+    @Setter
     private String apiData;
 
     public FetchedData(String domain, String url, String fetchedDataPath, String pageType) {
@@ -40,48 +57,9 @@ public class FetchedData {
         this.fetchedDataPath = fetchedDataPath;
         this.pageType = pageType;
     }
-    
+
     public FetchedData() {
         // Default constructor required by JPA
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getHtml() {
-        return html;
-    }
-    
-    public String getApiData() {
-        return apiData;
-    }
-    
-    public String getPageType() {
-        return pageType;
-    }
-    
-    public void setHtml(String html) {
-        this.html = html;
-    }
-    
-    public void setApiData(String apiData) {
-        this.apiData = apiData;
-    }
-    
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-    
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    
-    public void setPageType(String pageType) {
-        this.pageType = pageType;
-    }
 }
