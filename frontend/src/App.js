@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_BASE_URL = 'http://localhost:8080/scraper';
-
+//const API_BASE_URL = 'http://localhost:8080/scraper';
+const API_BASE_URL = 'https://shielded-stream-74167-d176d6570916.herokuapp.com/scraper';
 function App() {
   const [url, setUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
