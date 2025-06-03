@@ -1,37 +1,37 @@
 package com.webscraper.ScraperService.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
 
-@Entity
-@Table(name="fetched_data")
+//@Entity
+//@Table(name="fetched_data")
 public class FetchedData {
     
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+//    @Id
+//    @GeneratedValue(strategy=GenerationType.IDENTITY)
+//    @Column(name="id")
     private Long id;
     
-    @Column(name="domain")
+//    @Column(name="domain")
     private String domain;
 
-    @Column(name="url")
+//    @Column(name="url")
     private String url;
 
-    @Column(name="data_path")
+//    @Column(name="data_path")
     private String fetchedDataPath;
 
-    @Column(name="page_type")
+//    @Column(name="page_type")
     private String pageType;
 
-    @Column(name="html", columnDefinition="TEXT")
+//    @Column(name="html", columnDefinition="TEXT")
     private String html;
     
-    @Column(name="api_data", columnDefinition="TEXT")
+//    @Column(name="api_data", columnDefinition="TEXT")
     private String apiData;
 
     public FetchedData(String domain, String url, String fetchedDataPath, String pageType) {
@@ -48,11 +48,11 @@ public class FetchedData {
     public String getDomain() {
         return domain;
     }
-    
+
     public String getUrl() {
         return url;
     }
-    
+
     public String getHtml() {
         return html;
     }

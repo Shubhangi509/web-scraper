@@ -1,60 +1,56 @@
 package com.webscraper.ScraperService.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+//import jakarta.persistence.Column;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.GeneratedValue;
+//import jakarta.persistence.GenerationType;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
 
-@Entity
-@Table(name="scraped_data")
+//@Entity
+//@Table(name="scraped_data")
 public class ScrapedData {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id")
+//    @Id
+//    @GeneratedValue(strategy=GenerationType.IDENTITY)
+//    @Column(name="id")
     private Long id;
 
-    @Column(name="domain")
+//    @Column(name="domain")
     private String domain;
 
-    @Column(name="url")
+//    @Column(name="url")
     private String url;
 
-    @Column(name="page_type")
+//    @Column(name="page_type")
     private String pageType;
 
-    @Column(name="product_id")
+//    @Column(name="product_id")
     private String productId;
 
-    @Column(name="title")
+//    @Column(name="title")
     private String title;
 
-    @Column(name="description", columnDefinition="TEXT")
+//    @Column(name="description", columnDefinition="TEXT")
     private String description;
 
-    @Column(name="mrp")
+//    @Column(name="mrp")
     private Double mrp;
 
-    @Column(name="selling_price")
+//    @Column(name="selling_price")
     private Double sellingPrice;
 
-    @Column(name="discount")
+//    @Column(name="discount")
     private Double discount;
 
-    @Column(name="brand")
+//    @Column(name="brand")
     private String brand;
 
-    @Column(name="image_url")
+//    @Column(name="image_url")
     private String imageUrl;
 
-    @Column(name="availability")
+//    @Column(name="availability")
     private String availability;
 
     
