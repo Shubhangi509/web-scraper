@@ -142,7 +142,7 @@ function App() {
   };
 
   const handleDemo = () => {
-    setUrl('https://www.amazon.in/Samsung-Snapdragon-Segment-Gorilla-Burgundy/dp/B0CS5PTDWJ/');
+    setUrl('https://varanga.in/collections/kurta-sets');
     setShowDemo(true);
     
     // Add visual feedback
